@@ -41,7 +41,12 @@ int main(int argc, char *argv[]) {
     }
     CheckParallelization([&test](size_t nt) -> long double {return SumParallel(test.begin(), test.end(), nt);});
 
-    
+    //-----------------------------------------------------
+
+    std::cout << "Test for the summation with function code" << std::endl;
+    std::cout << SumParallel(from_one_to_hundred.begin(), from_one_to_hundred.end(), srq, 2) << std::endl;
+    CheckParallelization([&test](size_t nt) -> long double {return SumParallel(test.begin(), test.end(), srq, nt);});
+
     //-----------------------------------------------------
 
     std::cout << "Test for the variance code" << std::endl;
