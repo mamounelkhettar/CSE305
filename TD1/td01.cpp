@@ -150,20 +150,21 @@ static bool FindParallel(Iter begin, Iter end, T target, size_t num_threads) {
 }
 
 //-----------------------------------------------------------------------------
-template <typename ReturnType>
-std::optional<ReturnType> ret ;
+//template <typename ReturnType>
+//std::optional<ReturnType> ret ;
 
 template <typename ArgType, typename ReturnType>
-static std::optional<ReturnType> check(ReturnType f(ArgType), ArgType arg) {
-    ret<ReturnType> = f(arg) ;
+static std::optional<ReturnType> check(ReturnType f(ArgType), ArgType arg, std::optional<ReturnType> &ret) {
+    ret = f(arg) ;
 }
 
 template <typename ArgType, typename ReturnType>
 std::optional<ReturnType> RunWithTimeout(ReturnType f(ArgType), ArgType arg, size_t timeout) {
-    std::thread t(&check<ReturnType, ArgType>, f, arg) ;
+    std::optional<ReturnType> ret ;
+    std::thread t(&check<ReturnType, ArgType>, f, arg, std::ref(ret)) ;
     t.detach() ;
     std::this_thread::sleep_for(std::chrono::milliseconds(timeout)) ;
-    return ret<ReturnType> ;
+    return ret ;
 }
 
 //-----------------------------------------------------------------------------
