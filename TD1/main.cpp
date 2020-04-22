@@ -23,6 +23,7 @@ void CheckParallelization(Func func) {
 }
 
 int main(int argc, char *argv[]) {
+
     std::cout << "Test for the summation code" << std::endl;
 
     // Simple correctness check
@@ -30,6 +31,7 @@ int main(int argc, char *argv[]) {
     for (size_t i = 0; i < 100; ++i) {
         from_one_to_hundred.push_back(i + 1);
     }
+    /*
     // Should print 5050
     std::cout << SumParallel(from_one_to_hundred.begin(), from_one_to_hundred.end(), 2) << std::endl;
 
@@ -44,8 +46,14 @@ int main(int argc, char *argv[]) {
     //-----------------------------------------------------
 
     std::cout << "Test for the summation with function code" << std::endl;
-    std::cout << SumParallel(from_one_to_hundred.begin(), from_one_to_hundred.end(), srq, 2) << std::endl;
-    CheckParallelization([&test](size_t nt) -> long double {return SumParallel(test.begin(), test.end(), srq, nt);});
+    std::cout << SumParallel(from_one_to_hundred.begin(), from_one_to_hundred.end(), sqr, 2) << std::endl;
+    CheckParallelization([&test](size_t nt) -> long double {return SumParallel(test.begin(), test.end(), sqr, nt);});
+
+    //-----------------------------------------------------
+
+    std::cout << "Test for the mean code" << std::endl;
+    std::cout << MeanParallel(from_one_to_hundred.begin(), from_one_to_hundred.end(), 2) << std::endl;
+    CheckParallelization([&test](size_t nt) -> long double {return MeanParallel(test.begin(), test.end(), nt);});
 
     //-----------------------------------------------------
 
@@ -57,10 +65,11 @@ int main(int argc, char *argv[]) {
         from_zero_to_nine.push_back(i);
     }
     // Should print 
+
     std::cout << VarianceParallel(from_zero_to_nine.begin(), from_zero_to_nine.end(), 2) << std::endl;
 
     CheckParallelization([&test](size_t nt) -> long double {return VarianceParallel(test.begin(), test.end(), nt);});
-
+    */
     //-----------------------------------------------------
     
     std::cout << "Test for finding code" << std::endl;
@@ -68,8 +77,9 @@ int main(int argc, char *argv[]) {
     for (size_t i = 0; i < 10000000; ++i) {
         test_find.push_back(rand() % 100);
     }
+
     CheckParallelization([&test_find](size_t nt) -> bool {return FindParallel(test_find.begin(), test_find.end(), 101, nt);});
-    
+
     test_find[7000000] = 101;
     CheckParallelization([&test_find](size_t nt) -> bool {return FindParallel(test_find.begin(), test_find.end(), 101, nt);});
     
